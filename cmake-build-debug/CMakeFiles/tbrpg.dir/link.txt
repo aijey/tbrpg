@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2020.3\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\tbrpg.dir/objects.a
+C:\mingw64\bin\ar.exe cr CMakeFiles\tbrpg.dir/objects.a @CMakeFiles\tbrpg.dir\objects1.rsp
+C:\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\tbrpg.dir/objects.a -Wl,--no-whole-archive  -o tbrpg.exe -Wl,--out-implib,libtbrpg.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\tbrpg.dir\linklibs.rsp
