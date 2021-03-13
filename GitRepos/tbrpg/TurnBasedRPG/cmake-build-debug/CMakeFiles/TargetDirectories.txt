@@ -1,0 +1,3 @@
+C:/Users/Arturan/GitRepos/tbrpg/TurnBasedRPG/cmake-build-debug/CMakeFiles/TurnBasedRPG.dir
+C:/Users/Arturan/GitRepos/tbrpg/TurnBasedRPG/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Arturan/GitRepos/tbrpg/TurnBasedRPG/cmake-build-debug/CMakeFiles/rebuild_cache.dir
