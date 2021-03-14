@@ -7,15 +7,17 @@
 
 
 #include "SceneObject/SceneObject.hpp"
+#include <vector>
 
 class Scene {
+    friend class SceneObject;
+    friend class Renderer;
 public:
     Scene() = default;
-    std::shared_ptr<SceneObject> createSceneObject(const std::string& name){
-        sceneObjects.push_back(std::make_shared<SceneObject>(name));
-    }
-private:
+    std::shared_ptr<SceneObject> createSceneObject(const std::string& name);
     std::vector<std::shared_ptr<SceneObject>> sceneObjects;
+    std::vector<std::shared_ptr<VisualComponent>> visualComponents;
+private:
 };
 
 

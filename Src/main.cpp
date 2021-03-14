@@ -1,8 +1,6 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Utils/Observer/Observer.hpp"
-#include "UpdateListener.hpp"
-#include <memory>
+#include "Core/Core.hpp"
 int main() {
-
+    Core core(480, 480);
+    core.launch();
 }

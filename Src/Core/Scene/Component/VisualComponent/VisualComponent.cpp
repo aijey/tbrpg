@@ -4,10 +4,8 @@
 
 #include "VisualComponent.hpp"
 #include "../../SceneObject/SceneObject.hpp"
-VisualComponent::VisualComponent(std::shared_ptr<SceneObject> sceneObject): BaseComponent::BaseComponent(sceneObject) {
-    attachToSceneObject();
-}
+#include <iostream>
+VisualComponent::VisualComponent(std::shared_ptr<sf::Drawable> drawable)
+    : BaseComponent(), drawable(drawable) {
 
-void VisualComponent::attachToSceneObject() {
-    sceneObject->addVisualComponent(std::shared_ptr<VisualComponent>(this));
 }

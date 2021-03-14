@@ -9,13 +9,17 @@
 #include "Transform/Transform.hpp"
 #include "../Component/VisualComponent/VisualComponent.hpp"
 
+class Scene;
 class SceneObject {
 public:
     Transform transform;
     std::vector<std::shared_ptr<VisualComponent>> visualComponents;
     std::string name;
-    explicit SceneObject(const std::string& name): name(name){};
-    void addVisualComponent(std::shared_ptr<VisualComponent> visualComponent);
+    explicit SceneObject(const std::string& name, Scene& scene);
+    void createVisualComponent(std::shared_ptr<sf::Drawable> drawable);
+
+private:
+    Scene& scene;
 };
 
 

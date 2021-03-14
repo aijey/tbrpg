@@ -10,11 +10,8 @@
 #include <memory>
 class SceneObject;
 class BaseComponent {
-private:
-    std::shared_ptr<SceneObject> sceneObject;
 public:
-    explicit BaseComponent(std::shared_ptr<SceneObject> sceneObject);
-    std::shared_ptr<SceneObject> getSceneObject();
+    explicit BaseComponent();
 };
 
 

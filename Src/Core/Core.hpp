@@ -7,22 +7,45 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <iostream>
 #include "Scene/Scene.hpp"
-
+#include "Renderer/Renderer.hpp"
+#include "Scene/Component/VisualComponent/VisualComponent.hpp"
 class Core {
+public:
+
+    Core(int windowWidth, int windowHeight):
+        windowWidth(windowWidth), windowHeight(windowHeight), scene(), renderer(scene){
+    };
+    void launch(){
+        loadScene();
+        window = std::make_shared<sf::RenderWindow>(sf::VideoMode(windowWidth, windowHeight), "TurnBasedRPG");
+        //window = new sf::RenderWindow(sf::VideoMode(windowWidth, windowHeight), "TurnBasedRPG"
+        while (window->isOpen()){
+            window->clear(sf::Color::Magenta);
+            renderer.render(window);
+            window->display();
+            sf::Event event;
+
+            while (window->pollEvent(event)){
+                if (event.type == sf::Event::Closed){
+                    window->close();
+                }
+            }
+
+        }
+    }
 private:
     int windowWidth, windowHeight;
     std::shared_ptr<sf::RenderWindow> window;
     Scene scene;
-public:
-
-    Core(int windowWidth, int windowHeight): windowWidth(windowWidth), windowHeight(windowHeight){
-    };
-    void launch(){
-        window = std::make_shared<sf::RenderWindow>(sf::VideoMode(windowWidth, windowHeight), "TurnBasedRPG");
-        //window = new sf::RenderWindow(sf::VideoMode(windowWidth, windowHeight), "TurnBasedRPG")
+    Renderer renderer;
+    void loadScene(){
+        auto sceneObject1 = scene.createSceneObject("Object1");
+        auto circle = std::make_shared<sf::CircleShape>(100);
+        circle->setFillColor(sf::Color::Green);
+        sceneObject1->createVisualComponent(circle);
     }
-
 
 };
 

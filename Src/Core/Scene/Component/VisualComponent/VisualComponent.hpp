@@ -6,12 +6,11 @@
 #define TBRPG_VISUALCOMPONENT_HPP
 #include "../BaseComponent.hpp"
 #include <memory>
+#include <SFML/Graphics.hpp>
 class VisualComponent: public BaseComponent {
 public:
-    VisualComponent(std::shared_ptr<SceneObject> sceneObject);
-private:
-    std::shared_ptr<SceneObject> sceneObject;
-    virtual void attachToSceneObject();
+    VisualComponent(std::shared_ptr<sf::Drawable> drawable);
+    std::shared_ptr<sf::Drawable> drawable;
 };
 
 
