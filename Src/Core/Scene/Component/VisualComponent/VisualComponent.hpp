@@ -7,10 +7,14 @@
 #include "../BaseComponent.hpp"
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include "../../SceneObject/Transform/Transform.hpp"
+
 class VisualComponent: public BaseComponent {
 public:
-    VisualComponent(std::shared_ptr<sf::Drawable> drawable);
+    VisualComponent(std::shared_ptr<sf::Drawable> drawable, SceneObject* sceneObject);
     std::shared_ptr<sf::Drawable> drawable;
+    void prepareForRender(const Transform& cameraTransform);
+    VisualComponent(const VisualComponent& other) = delete;
 };
 
 

@@ -3,5 +3,16 @@
 //
 
 #include "BaseComponent.hpp"
+#include "../SceneObject/SceneObject.hpp"
 
-BaseComponent::BaseComponent() = default;
+
+
+
+
+BaseComponent::BaseComponent(SceneObject *sceneObject): sceneObject(sceneObject)  {
+
+}
+
+SceneObject* BaseComponent::getSceneObject() {
+    return sceneObject;
+}

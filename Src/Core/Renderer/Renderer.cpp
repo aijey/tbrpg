@@ -9,9 +9,9 @@
 Renderer::Renderer(Scene &scene): scene(scene) {
 }
 
-void Renderer::render(std::shared_ptr<sf::RenderWindow> target) {
-    for (auto& i: scene.visualComponents){
-        std::cout << "Iteration" << std::endl;
-        target->draw(*(i->drawable));
+void Renderer::render() {
+    auto& cameras = scene.cameraComponents;
+    for (auto& i: cameras){
+        i->renderVisuals(scene.visualComponents);
     }
 }

@@ -7,6 +7,7 @@
 
 
 #include "SceneObject/SceneObject.hpp"
+#include "SceneResources/SceneResources.hpp"
 #include <vector>
 
 class Scene {
@@ -17,7 +18,8 @@ public:
     std::shared_ptr<SceneObject> createSceneObject(const std::string& name);
     std::vector<std::shared_ptr<SceneObject>> sceneObjects;
     std::vector<std::shared_ptr<VisualComponent>> visualComponents;
-private:
+    std::vector<std::shared_ptr<CameraComponent>> cameraComponents;
+    void loadScene(SceneResources& resources);
 };
 
 

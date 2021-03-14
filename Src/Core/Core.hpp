@@ -15,18 +15,20 @@ class Core {
 public:
 
     Core(int windowWidth, int windowHeight):
-        windowWidth(windowWidth), windowHeight(windowHeight), scene(), renderer(scene){
+        windowWidth(windowWidth), windowHeight(windowHeight), scene(), renderer(scene), sceneResources(window){
     };
     void launch(){
-        loadScene();
         window = std::make_shared<sf::RenderWindow>(sf::VideoMode(windowWidth, windowHeight), "TurnBasedRPG");
+        sceneResources.renderWindow = window;
         //window = new sf::RenderWindow(sf::VideoMode(windowWidth, windowHeight), "TurnBasedRPG"
+
+        scene.loadScene(sceneResources);
         while (window->isOpen()){
+
             window->clear(sf::Color::Magenta);
-            renderer.render(window);
+            renderer.render();
             window->display();
             sf::Event event;
-
             while (window->pollEvent(event)){
                 if (event.type == sf::Event::Closed){
                     window->close();
@@ -39,13 +41,8 @@ private:
     int windowWidth, windowHeight;
     std::shared_ptr<sf::RenderWindow> window;
     Scene scene;
+    SceneResources sceneResources;
     Renderer renderer;
-    void loadScene(){
-        auto sceneObject1 = scene.createSceneObject("Object1");
-        auto circle = std::make_shared<sf::CircleShape>(100);
-        circle->setFillColor(sf::Color::Green);
-        sceneObject1->createVisualComponent(circle);
-    }
 
 };
 

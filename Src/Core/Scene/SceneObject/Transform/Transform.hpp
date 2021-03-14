@@ -10,12 +10,15 @@
 class Transform {
 public:
     sf::Vector2<float> position;
-    float angle;
+    float rotation;
     Transform() = default;
-    Transform(sf::Vector2<float> position, float angle): position(position), angle(angle){};
+    Transform(sf::Vector2<float> position, float rotation): position(position), rotation(rotation){};
 
     void setPosition(sf::Vector2<float> newPosition){
         position = newPosition;
+    }
+    void setRotation(float rotation){
+        this->rotation = rotation;
     }
 };
 

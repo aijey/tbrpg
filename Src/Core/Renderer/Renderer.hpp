@@ -10,11 +10,12 @@
 #include <SFML/Graphics.hpp>
 class Scene;
 class VisualComponent;
+class CameraComponent;
 class Renderer {
 public:
 
     Renderer(Scene& scene);
-    void render(std::shared_ptr<sf::RenderWindow> target);
+    void render();
     Scene& scene;
 private:
 };

@@ -7,11 +7,17 @@
 
 
 
+
 #include <memory>
+#include <iostream>
+
 class SceneObject;
 class BaseComponent {
 public:
-    explicit BaseComponent();
+    explicit BaseComponent(SceneObject* sceneObject);
+    SceneObject* getSceneObject();
+private:
+    SceneObject* sceneObject;
 };
 
 
