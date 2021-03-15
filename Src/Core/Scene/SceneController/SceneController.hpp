@@ -12,7 +12,6 @@
 class SceneController {
 public:
     explicit SceneController(Scene& scene, SceneResources& sceneResources);
-    virtual void run() = 0;
 protected:
     Scene& scene;
     SceneResources& sceneResources;

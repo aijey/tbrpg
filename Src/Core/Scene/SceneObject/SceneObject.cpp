@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "SceneObject.hpp"
-#include "../Scene.hpp"
 
 SceneObject::SceneObject(const std::string& name, Scene& scene): name(name), scene(scene){
 

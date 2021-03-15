@@ -13,7 +13,7 @@
 
 
 class Scene;
-class SceneObject: public std::enable_shared_from_this<SceneObject> {
+class SceneObject {
 public:
     Transform transform;
     std::vector<std::shared_ptr<VisualComponent>> visualComponents;
@@ -28,6 +28,7 @@ public:
 private:
     Scene& scene;
 };
+
 
 
 

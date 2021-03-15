@@ -5,13 +5,13 @@
 #ifndef TBRPG_OBSERVERSUBSCRIBER_HPP
 #define TBRPG_OBSERVERSUBSCRIBER_HPP
 
-
+template<class EventArgs>
 class ObserverSubscriber {
 public:
-    void notify(){
-        onNotified();
+    void notify(const EventArgs& eventArgs){
+        onNotified(eventArgs);
     }
-    virtual void onNotified() = 0;
+    virtual void onNotified(const EventArgs& eventArgs) = 0;
 };
 
 

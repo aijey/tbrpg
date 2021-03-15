@@ -8,17 +8,18 @@
 #include <vector>
 #include "ObserverSubscriber.hpp"
 #include <memory>
+template<class EventArgs>
 class Observer {
 private:
-    std::vector<std::shared_ptr<ObserverSubscriber>> subscribers;
+    std::vector<std::shared_ptr<ObserverSubscriber<EventArgs>>> subscribers;
 public:
     Observer() = default;
-    void notifyAll(){
+    void notifyAll(const EventArgs& eventArgs){
         for (auto& i: subscribers){
-            i->notify();
+            i->notify(eventArgs);
         }
     }
-    void subscribe(const std::shared_ptr<ObserverSubscriber>& sub) {
+    void subscribe(const std::shared_ptr<ObserverSubscriber<EventArgs>>& sub) {
         subscribers.push_back(sub);
     }
 
