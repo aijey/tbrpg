@@ -5,6 +5,9 @@
 #include "Scene.hpp"
 #include "../../SceneControllers/MainController/MainController.hpp"
 
+Scene::Scene() = default;
+
+
 std::shared_ptr<SceneObject> Scene::createSceneObject(const std::string& name){
     auto sceneObject = std::make_shared<SceneObject>(name, *this);
     sceneObjects.push_back(sceneObject);
@@ -12,15 +15,11 @@ std::shared_ptr<SceneObject> Scene::createSceneObject(const std::string& name){
 }
 
 void Scene::loadScene(SceneResources& resources) {
-    auto testController = std::make_shared<MainController>(*this, resources);
-    addController(testController);
-    testController->run();
-
+    mainController = std::make_shared<MainController>(*this, resources);
+    mainController->run();
 }
 
-void Scene::addController(std::shared_ptr<SceneController> sceneController) {
-    sceneControllers.push_back(sceneController);
-}
+
 
 void Scene::setSceneTime(double time) {
     sceneTime = time;
@@ -28,4 +27,12 @@ void Scene::setSceneTime(double time) {
 
 double Scene::getSceneTime() const {
     return sceneTime;
+}
+
+Scene::UpdateEvent::Args::Args(double d): deltaTime(d) {
+
+}
+
+Scene::KeyEvent::Args::Args(sf::Keyboard::Key code): code(code) {
+
 }

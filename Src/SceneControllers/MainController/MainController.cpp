@@ -3,12 +3,14 @@
 //
 
 #include "MainController.hpp"
-#include "TestControllerUpdateListener.hpp"
 #include "../MainCharacter/MainCharacterController.hpp"
 #include "../Lerper/LerperController.hpp"
 
-MainController::MainController(Scene &scene, SceneResources &resources) : SceneController(scene, resources){}
 
+MainController::MainController(Scene &scene, SceneResources &resources)
+    : SceneController(scene, resources) {
+
+}
 void MainController::run() {
         auto cameraSc = scene.createSceneObject("Camera");
         cameraSc->createCameraComponent(sceneResources.renderWindow);
@@ -30,26 +32,32 @@ void MainController::run() {
         auto doctorObject = scene.createSceneObject("DoctorObject");
         auto doctorCircle = std::make_shared<sf::CircleShape>(20);
         doctorCircle->setFillColor(sf::Color::Green);
-        doctorObject->createVisualComponent(doctorCircle);
+        doctorObject->createVisualComponent(doctorCircle, {20, 20});
 
         // ENGINEER OBJECT
         auto engineerObject = scene.createSceneObject("EngineerObject");
         auto engineerCircle = std::make_shared<sf::CircleShape>(20);
         engineerCircle->setFillColor(sf::Color::Blue);
-        engineerObject->createVisualComponent(engineerCircle);
+        engineerObject->createVisualComponent(engineerCircle, {20, 20});
 
         // SNIPER OBJECT
         auto sniperObject = scene.createSceneObject("SniperObject");
         auto sniperCircle = std::make_shared<sf::CircleShape>(20);
         sniperCircle->setFillColor(sf::Color(163, 73, 164)); // Purple
-        sniperObject->createVisualComponent(sniperCircle);
+        sniperObject->createVisualComponent(sniperCircle, {20, 20});
 
         // LerperController
-        auto lerperController = std::make_shared<LerperController>(scene, sceneResources);
-        scene.addController(lerperController);
-        auto mainCharacterController = std::make_shared<MainCharacterController>(scene, sceneResources, lerperController);
-        scene.addController(mainCharacterController);
-        mainCharacterController->run(doctorObject, sniperObject, engineerObject);
+        lerperController = std::make_shared<LerperController>(scene, sceneResources);
+        lerperController->run();
+        // MainCharacterController
+        mainCharacterController =
+                std::make_unique<MainCharacterController>(scene, sceneResources,
+                                                          MainCharacterController::InputParams(doctorObject,
+                                                                                               sniperObject,
+                                                                                               engineerObject,
+                                                                                               lerperController));
+        mainCharacterController->run();
 }
+
 
 

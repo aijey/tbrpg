@@ -10,13 +10,41 @@
 
 class MainCharacterController: public SceneController {
 public:
-    MainCharacterController(Scene& scene, SceneResources& resources, std::shared_ptr<LerperController> lerperController);
-    void run(std::shared_ptr<SceneObject> doctorObject,
-             std::shared_ptr<SceneObject> sniperObject,
-             std::shared_ptr<SceneObject> engineerObject);
+    struct InputParams: public SceneControllerInputParams {
+        std::shared_ptr<SceneObject> doctorObject;
+        std::shared_ptr<SceneObject> sniperObject;
+        std::shared_ptr<SceneObject> engineerObject;
+        std::shared_ptr<LerperController> lerperController;
+        InputParams(std::shared_ptr<SceneObject> doctorObject, std::shared_ptr<SceneObject> sniperObject,
+                    std::shared_ptr<SceneObject> engineerObject, std::shared_ptr<LerperController> lerperController);
+    };
 
+    MainCharacterController(Scene& scene, SceneResources& resources, InputParams inputParams);
+    void run() override;
+    InputParams inputParams;
+
+
+private:
+    struct KeyEventListener: public Observer::Subscriber {
+        MainCharacterController* controller = nullptr;
+        KeyEventListener() = default;
+        explicit KeyEventListener(MainCharacterController* controller): controller(controller){}
+        void onNotified(const Observer::BaseArgs& eventArgs) const override;
+    };
+
+    struct UpdateListener: public Observer::Subscriber {
+        MainCharacterController* controller = nullptr;
+        UpdateListener() = default;
+        explicit UpdateListener(MainCharacterController* controller): controller(controller){}
+        void onNotified(const Observer::BaseArgs& eventArgs) const override;
+    };
     std::shared_ptr<LerperController> lerperController;
+    sf::Keyboard::Key pressedKey = sf::Keyboard::Unknown;
+    UpdateListener updateListener;
+    KeyEventListener keyEventListener;
+
 };
+
 
 
 #endif //TBRPG_MAINCHARACTERCONTROLLER_HPP

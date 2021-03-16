@@ -8,34 +8,56 @@
 
 #include "SceneObject/SceneObject.hpp"
 #include "SceneResources/SceneResources.hpp"
-#include "SceneEventArgs/KeyEventArgs/KeyEventArgs.hpp"
-#include "SceneEventArgs/UpdateEventArgs/UpdateEventArgs.hpp"
 #include "../../Utils/Observer/Observer.hpp"
 #include <vector>
 #include <chrono>
+#include <SFML/Graphics.hpp>
+class MainController;
 class SceneController;
 class Scene {
     friend class SceneObject;
     friend class Renderer;
+    friend class Core;
+
+
 public:
-    Scene() = default;
+    class UpdateEvent : public Observer {
+    public:
+        struct Args: public Observer::BaseArgs{
+            explicit Args(double d);
+            double deltaTime;
+        };
+        void notifyAll(const Args& eventArgs) {
+            Observer::notifyAll(eventArgs);
+        }
+    };
+    class KeyEvent: public Observer {
+    public:
+        struct Args: public Observer::BaseArgs{
+            explicit Args(sf::Keyboard::Key code);
+            sf::Keyboard::Key code;
+        };
+        void notifyAll(const Args& eventArgs) {
+            Observer::notifyAll(eventArgs);
+        }
+    };
+    Scene();
     std::shared_ptr<SceneObject> createSceneObject(const std::string& name);
-    void addController(std::shared_ptr<SceneController> sceneController);
     std::vector<std::shared_ptr<SceneObject>> sceneObjects;
     std::vector<std::shared_ptr<VisualComponent>> visualComponents;
     std::vector<std::shared_ptr<CameraComponent>> cameraComponents;
-    std::vector<std::shared_ptr<SceneController>> sceneControllers;
+    std::shared_ptr<MainController> mainController;
     void loadScene(SceneResources& resources);
-    Observer<UpdateEventArgs> updateEvent;
-    Observer<KeyEventArgs> keyPressedEvent;
-    Observer<UpdateEventArgs> lateUpdateEvent;
-    Observer<KeyEventArgs> keyReleasedEvent;
+    UpdateEvent updateEvent;
+    KeyEvent keyPressedEvent;
+    UpdateEvent lateUpdateEvent;
+    KeyEvent keyReleasedEvent;
 
     void setSceneTime(double time);
     double getSceneTime() const;
 
 private:
-    double sceneTime;
+    double sceneTime = 0.0;
 };
 
 

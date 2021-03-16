@@ -5,6 +5,7 @@
 #include "SceneController.hpp"
 
 
-SceneController::SceneController(Scene &scene, SceneResources &sceneResources): scene(scene), sceneResources(sceneResources) {
+SceneController::SceneController(Scene &scene, SceneResources &sceneResources)
+    :scene(scene), sceneResources(sceneResources){
 
 }

@@ -6,22 +6,29 @@
 #define TBRPG_OBSERVER_HPP
 
 #include <vector>
-#include "ObserverSubscriber.hpp"
 #include <memory>
-template<class EventArgs>
+#include <set>
+
 class Observer {
-private:
-    std::vector<std::shared_ptr<ObserverSubscriber<EventArgs>>> subscribers;
 public:
+    struct BaseArgs {
+
+    };
+    class Subscriber {
+    public:
+        Subscriber() = default;
+        ~Subscriber();
+        std::set<Observer*> subscribedTo;
+        void notify(const BaseArgs& eventArgs) const;
+        virtual void onNotified(const BaseArgs& eventArgs) const = 0;
+    };
     Observer() = default;
-    void notifyAll(const EventArgs& eventArgs){
-        for (auto& i: subscribers){
-            i->notify(eventArgs);
-        }
-    }
-    void subscribe(const std::shared_ptr<ObserverSubscriber<EventArgs>>& sub) {
-        subscribers.push_back(sub);
-    }
+    void notifyAll(const BaseArgs& eventArgs);
+    void subscribe(Subscriber* sub);
+    void unsubscribe(Subscriber* sub);
+
+private:
+    std::set<Subscriber*> subscribers;
 
 };
 

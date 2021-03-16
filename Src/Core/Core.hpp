@@ -35,7 +35,7 @@ public:
             auto timePassedFromStart = std::chrono::duration_cast<std::chrono::microseconds>(updateTime - sceneStartTime).count();
             scene.setSceneTime(static_cast<double>(timePassedFromStart) / 1000000);
             prevUpdateTime = updateTime;
-            scene.updateEvent.notifyAll({static_cast<float>(timePassed / 1000000.0)});
+            scene.updateEvent.notifyAll(Scene::UpdateEvent::Args(((double)timePassed / 1000000.0)));
 
             window->clear(sf::Color::Magenta);
             renderer.render();
@@ -46,16 +46,16 @@ public:
                     window->close();
                 }
                 if (event.type == sf::Event::KeyPressed){
-                    scene.keyPressedEvent.notifyAll({event.key.code});
+                    scene.keyPressedEvent.notifyAll(Scene::KeyEvent::Args(event.key.code));
                 }
                 if (event.type == sf::Event::KeyReleased){
-                    scene.keyReleasedEvent.notifyAll({event.key.code});
+                    scene.keyReleasedEvent.notifyAll(Scene::KeyEvent::Args(event.key.code));
                 }
             }
             auto lateUpdateTime = std::chrono::high_resolution_clock::now();
             timePassed = std::chrono::duration_cast<std::chrono::microseconds>(lateUpdateTime - prevLateUpdateTime).count();
             prevLateUpdateTime = lateUpdateTime;
-            scene.lateUpdateEvent.notifyAll({static_cast<float>(timePassed / 1000000.0)});
+            scene.lateUpdateEvent.notifyAll(Scene::UpdateEvent::Args(((double)timePassed / 1000000.0)));
             //std::cout << "Timepassed micro: " << timePassed << std::endl;
             //std::cout << "FPS: " << 1000000.0 / timePassed << std::endl;
         }

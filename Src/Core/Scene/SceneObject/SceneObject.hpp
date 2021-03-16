@@ -9,7 +9,6 @@
 #include "Transform/Transform.hpp"
 #include "../Component/VisualComponent/VisualComponent.hpp"
 #include "../Component/CameraComponent/CameraComponent.hpp"
-#include "../Scene.hpp"
 
 
 class Scene;
@@ -21,6 +20,7 @@ public:
     std::string name;
     explicit SceneObject(const std::string& name, Scene& scene);
     void createVisualComponent(std::shared_ptr<sf::Drawable> drawable);
+    void createVisualComponent(std::shared_ptr<sf::Drawable> drawable, const sf::Vector2f& pivot);
     void createCameraComponent(std::shared_ptr<sf::RenderWindow> renderWindow);
 
     SceneObject(const SceneObject& sceneObject) = delete;
@@ -28,8 +28,6 @@ public:
 private:
     Scene& scene;
 };
-
-
 
 
 #endif //TBRPG_SCENEOBJECT_HPP

@@ -16,30 +16,18 @@ public:
     LerperController(Scene& scene, SceneResources& sceneResources);
     std::shared_ptr<LerpedObject> addObject(std::string name, double fromValue, double toValue, double time,
                                             std::shared_ptr<LerperFunctions> lerperFunctions);
-    void run();
+    void run() override;
 private:
     std::multiset<std::shared_ptr<LerpedObject>> lerpedObjects;
-    class LerperUpdate: public ObserverSubscriber<UpdateEventArgs> {
-        LerperController* lerperController;
-        void onNotified(const UpdateEventArgs &eventArgs) override {
-            std::vector<std::shared_ptr<LerpedObject>> toRemove;
-            for (auto &i: lerperController->lerpedObjects){
-                auto time = lerperController->scene.getSceneTime();
-                bool result = i->update(time);
-                if (result){
-                    toRemove.push_back(i);
-                }
-            }
-
-            for (auto &i: toRemove){
-                lerperController->lerpedObjects.erase(i);
-            }
-
-        }
+class UpdateListener: public Observer::Subscriber {
+        LerperController* lerperController = nullptr;
+        void onNotified(const Observer::BaseArgs &eventArgs) const override;
 
     public:
-        explicit LerperUpdate(LerperController *lerperController): lerperController(lerperController){}
+        UpdateListener() = default;
+        explicit UpdateListener(LerperController *lerperController): lerperController(lerperController){}
     };
+    UpdateListener updateListener;
 };
 
 

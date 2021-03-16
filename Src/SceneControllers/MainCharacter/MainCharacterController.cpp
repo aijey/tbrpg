@@ -3,34 +3,43 @@
 //
 
 #include "MainCharacterController.hpp"
-#include "../Lerper/LerperFunctions.hpp"
+
 
 
 MainCharacterController::MainCharacterController(Scene &scene, SceneResources &resources,
-                                                 std::shared_ptr<LerperController> lerperController)
-                                                 : SceneController(scene, resources), lerperController(lerperController) {
+                                                 InputParams inputParams)
+                                                 : SceneController(scene, resources),
+                                                 inputParams(std::move(inputParams)),
+                                                 lerperController(inputParams.lerperController){
 
 }
 
-void MainCharacterController::run(std::shared_ptr<SceneObject> doctorObject, std::shared_ptr<SceneObject> sniperObject,
-                                  std::shared_ptr<SceneObject> engineerObject) {
-    class TestLerperFunctions: public LerperFunctions {
-    public:
-        MainCharacterController* mainCharacterController;
-        explicit TestLerperFunctions(MainCharacterController* mainCharacterController): mainCharacterController(mainCharacterController){}
-        void setValue(double value) override {
-            std::cout << mainCharacterController->scene.getSceneTime() << " -> " << value << std::endl;
-        }
-        void onFinish() override {
 
-        }
-    };
+MainCharacterController::InputParams::InputParams(std::shared_ptr<SceneObject> doctorObject,
+                                                  std::shared_ptr<SceneObject> sniperObject,
+                                                  std::shared_ptr<SceneObject> engineerObject,
+                                                  std::shared_ptr<LerperController> lerperController)
+                                                  : doctorObject(std::move(doctorObject)),
+                                                  sniperObject(std::move(sniperObject)),
+                                                  engineerObject(std::move(engineerObject)),
+                                                  lerperController(std::move(lerperController)) {
 
-    lerperController->run();
-    auto functions = std::make_shared<TestLerperFunctions>(this);
-    auto obj = lerperController->addObject("TestObj", -10, 10, 20, functions);
 }
 
+void MainCharacterController::KeyEventListener::onNotified(const Observer::BaseArgs &eventArgs) const {
+    auto keyEventArgs = static_cast<Scene::KeyEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
+    controller->pressedKey = keyEventArgs->code;
+    std::cout << "new key: " << controller->pressedKey << std::endl;
+}
 
+void MainCharacterController::UpdateListener::onNotified(const Observer::BaseArgs &eventArgs) const {
+    //auto updateArgsPtr = static_cast<Scene::UpdateEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
+    std::cout << controller->inputParams.doctorObject->name << std::endl;
+}
 
-
+void MainCharacterController::run() {
+    keyEventListener = KeyEventListener(this);
+    updateListener = UpdateListener(this);
+    scene.updateEvent.subscribe(&updateListener);
+    scene.keyPressedEvent.subscribe(&keyEventListener);
+}

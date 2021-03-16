@@ -4,8 +4,7 @@
 
 #include "LerperController.hpp"
 
-LerperController::LerperController(Scene &scene, SceneResources &sceneResources) : SceneController(scene,
-                                                                                                   sceneResources) {
+LerperController::LerperController(Scene &scene, SceneResources &sceneResources) : SceneController(scene, sceneResources) {
 
 }
 
@@ -18,7 +17,27 @@ std::shared_ptr<LerpedObject> LerperController::addObject(std::string name, doub
 }
 
 void LerperController::run() {
-    auto subscriber = std::make_shared<LerperUpdate>(this);
-    scene.updateEvent.subscribe(subscriber);
+    updateListener = UpdateListener(this);
+    scene.updateEvent.subscribe(&updateListener);
+}
+
+void LerperController::UpdateListener::onNotified(const Observer::BaseArgs &eventArgs) const {
+
+    auto updateArgsPtr = static_cast<Scene::UpdateEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
+
+    std::cout << updateArgsPtr->deltaTime << std::endl;
+    std::vector<std::shared_ptr<LerpedObject>> toRemove;
+    for (auto &i: lerperController->lerpedObjects) {
+        auto time = lerperController->scene.getSceneTime();
+        bool result = i->update(time);
+        if (result) {
+            toRemove.push_back(i);
+        }
+    }
+
+    for (auto &i: toRemove) {
+        lerperController->lerpedObjects.erase(i);
+    }
+
 
 }
