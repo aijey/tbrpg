@@ -29,10 +29,19 @@ public:
         KeyPressedListener() = default;
         void onNotified(const Scene::KeyEvent::Args& args) const override;
     };
+    class KeyReleasedListener : public Scene::KeyEvent::Subscriber {
+    public:
+        TestController* testController = nullptr;
+        explicit KeyReleasedListener(TestController* testController) : testController(testController) {};
+        KeyReleasedListener() = default;
+        void onNotified(const Scene::KeyEvent::Args& args) const override;
+    };
     InputParams params;
     UpdateListener updateListener;
     KeyPressedListener keyPressedListener;
+    KeyReleasedListener keyReleasedListener;
     std::vector<std::shared_ptr<SceneObject>> sceneObjects;
+    bool isSPressed = false;
     TestController(Scene& sc, SceneResources& sceneResources, InputParams params) : SceneController(sc, sceneResources), params(std::move(params)) {
 
     }

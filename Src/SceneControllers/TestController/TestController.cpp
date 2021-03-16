@@ -7,27 +7,27 @@
 
 void TestController::UpdateListener::onNotified(const Scene::UpdateEvent::Args &args) const {
     auto currentPosition = testController->params.circle->transform.getPosition();
-    currentPosition.x = std::cos(testController->scene.getSceneTime())*200;
-    currentPosition.y = std::sin(testController->scene.getSceneTime())*200;
-    testController->params.circle->transform.setPosition(currentPosition);
+    if (!testController->isSPressed) {
+        currentPosition.x = std::cos(testController->scene.getSceneTime()) * 200;
+        currentPosition.y = std::sin(testController->scene.getSceneTime()) * 200;
+        testController->params.circle->transform.setPosition(currentPosition);
+    }
     int h = 0;
     for (auto& i: testController->sceneObjects) {
-        auto oldPosition = i->transform.getPosition();
-        if (h%2 == 0) {
-            oldPosition += sf::Vector2f(10 * args.deltaTime,10 * args.deltaTime);
-        } else {
-            oldPosition += sf::Vector2f(-10 * args.deltaTime,-10 * args.deltaTime);
-        }
-        h++;
-        i->transform.setPosition(oldPosition);
+        auto curObjPos = i->transform.getPosition();
+        sf::Vector2<float> posDif = currentPosition - curObjPos;
+        auto toAdd = sf::Vector2f(posDif.x * 0.001, posDif.y * 0.001);
+        i->transform.setPosition(curObjPos + toAdd);
     }
 }
 
 void TestController::run() {
     updateListener = UpdateListener(this);
     keyPressedListener = KeyPressedListener(this);
+    keyReleasedListener = KeyReleasedListener(this);
     scene.updateEvent.subscribe(&updateListener);
     scene.keyPressedEvent.subscribe(&keyPressedListener);
+    scene.keyReleasedEvent.subscribe(&keyReleasedListener);
 }
 
 void TestController::KeyPressedListener::onNotified(const Scene::KeyEvent::Args &args) const {
@@ -39,5 +39,14 @@ void TestController::KeyPressedListener::onNotified(const Scene::KeyEvent::Args 
         newSceneObject->createVisualComponent(newCircle, { 10, 10 });
         newSceneObject->transform.setPosition(currentPosition);
         testController->sceneObjects.push_back(newSceneObject);
+    }
+    if (args.code == sf::Keyboard::S){
+        testController->isSPressed = true;
+    }
+}
+
+void TestController::KeyReleasedListener::onNotified(const Scene::KeyEvent::Args &args) const {
+    if (args.code == sf::Keyboard::S){
+        testController->isSPressed = false;
     }
 }
