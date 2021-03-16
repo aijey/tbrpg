@@ -21,3 +21,8 @@ void CameraComponent::renderVisuals(const std::vector<std::shared_ptr<VisualComp
 sf::Vector2u CameraComponent::getCameraSize() {
     return renderWindow->getSize();
 }
+
+std::shared_ptr<CameraComponent> CameraComponent::copy() {
+    return std::make_shared<CameraComponent>(renderWindow, getSceneObject());
+}
+

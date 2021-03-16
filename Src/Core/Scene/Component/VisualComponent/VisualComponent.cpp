@@ -31,4 +31,9 @@ void VisualComponent::prepareForRender(const Transform& cameraTransform, const s
 
 }
 
+std::shared_ptr<VisualComponent> VisualComponent::copy() {
+    auto newVisual = std::make_shared<VisualComponent>(drawable, getSceneObject());
+    return newVisual;
+}
+
 

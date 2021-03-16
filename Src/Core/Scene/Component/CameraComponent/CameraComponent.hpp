@@ -14,6 +14,7 @@ public:
     explicit CameraComponent(std::shared_ptr<sf::RenderWindow> renderWindow, SceneObject* sceneObject);
     void renderVisuals(const std::vector<std::shared_ptr<VisualComponent>>& visuals);
     sf::Vector2u getCameraSize();
+    std::shared_ptr<CameraComponent> copy();
 private:
     std::shared_ptr<sf::RenderWindow> renderWindow;
 

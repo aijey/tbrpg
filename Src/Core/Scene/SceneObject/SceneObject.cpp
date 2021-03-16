@@ -22,9 +22,35 @@ void SceneObject::createVisualComponent(std::shared_ptr<sf::Drawable> drawable, 
     visualComponents.push_back(visualComponent);
 }
 
+void SceneObject::copyVisualComponent(const std::shared_ptr<VisualComponent> &visualComponent) {
+    auto newVisualComponent = visualComponent->copy();
+    scene.visualComponents.push_back(newVisualComponent);
+    visualComponents.push_back(newVisualComponent);
+}
+
 void SceneObject::createCameraComponent(std::shared_ptr<sf::RenderWindow> renderWindow) {
     auto cameraComponent = std::make_shared<CameraComponent>(renderWindow, this);
     scene.cameraComponents.push_back(cameraComponent);
     cameraComponents.push_back(cameraComponent);
 }
+
+void SceneObject::copyCameraComponent(const std::shared_ptr<CameraComponent> &cameraComponent) {
+    auto newCameraComponent = cameraComponent->copy();
+    scene.cameraComponents.push_back(newCameraComponent);
+    cameraComponents.push_back(newCameraComponent);
+}
+
+std::shared_ptr<SceneObject> SceneObject::copy() const {
+    auto newSceneObject = scene.createSceneObject(name);
+    newSceneObject->transform = transform;
+    // COPY COMPONENTS
+    for(auto &i: visualComponents){
+        newSceneObject->copyVisualComponent(i);
+    }
+    for(auto &i: cameraComponents){
+        newSceneObject->copyCameraComponent(i);
+    }
+    return newSceneObject;
+}
+
 
