@@ -14,6 +14,7 @@ public:
     MainController(Scene& scene, SceneResources& resources);
     void run() override;
     std::shared_ptr<LerperController> lerperController;
+    std::shared_ptr<TestController> testController;
     std::shared_ptr<MainCharacterController> mainCharacterController;
 };
 

@@ -6,6 +6,7 @@
 #define TBRPG_MAINCHARACTERCONTROLLER_HPP
 
 #include "../../Core/Scene/SceneController/SceneController.hpp"
+#include "../TestController/TestController.hpp"
 #include "../Lerper/LerperController.hpp"
 
 class MainCharacterController: public SceneController {

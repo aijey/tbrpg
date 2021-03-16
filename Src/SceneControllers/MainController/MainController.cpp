@@ -5,6 +5,7 @@
 #include "MainController.hpp"
 #include "../MainCharacter/MainCharacterController.hpp"
 #include "../Lerper/LerperController.hpp"
+#include "../../Components/Characters/Doctor/Doctor.hpp"
 
 
 MainController::MainController(Scene &scene, SceneResources &resources)
@@ -21,6 +22,12 @@ void MainController::run() {
         circle->setFillColor(sf::Color::Green);
         circleSc->createVisualComponent(circle);
 
+        // krutitisya
+        auto scene0 = scene.createSceneObject("MySceneObject");
+        auto newCircle = std:: make_shared<sf::CircleShape>(20);
+        newCircle->setFillColor(sf::Color::Black);
+        scene0->createVisualComponent(newCircle, { 20, 20 });
+
         auto sceneObject2 = scene.createSceneObject("SquareObject1");
         sceneObject2->transform.setPosition(sf::Vector2f(50, 50));
         sceneObject2->transform.setRotation(45);
@@ -29,7 +36,7 @@ void MainController::run() {
         sceneObject2->createVisualComponent(square);
 
         // DOCTOR OBJECT
-        auto doctorObject = scene.createSceneObject("DoctorObject");
+        auto doctorObject = scene.createSceneObject("Doc");
         auto doctorCircle = std::make_shared<sf::CircleShape>(20);
         doctorCircle->setFillColor(sf::Color::Green);
         doctorObject->createVisualComponent(doctorCircle, {20, 20});
@@ -58,6 +65,10 @@ void MainController::run() {
                                                                                                engineerObject,
                                                                                                lerperController));
         mainCharacterController->run();
+
+        //TestController
+        testController = std::make_shared<TestController>(scene, sceneResources, TestController::InputParams(scene0));
+        testController->run();
 }
 
 

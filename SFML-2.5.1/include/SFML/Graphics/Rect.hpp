@@ -241,11 +241,11 @@ typedef Rect<float> FloatRect;
 /// sf::Vector2i size(18, 10);
 /// sf::IntRect r2(position, size);
 ///
-/// // Test intersections with the point (3, 1)
+/// // TestController intersections with the point (3, 1)
 /// bool b1 = r1.contains(3, 1); // true
 /// bool b2 = r2.contains(3, 1); // false
 ///
-/// // Test the intersection between r1 and r2
+/// // TestController the intersection between r1 and r2
 /// sf::IntRect result;
 /// bool b3 = r1.intersects(r2, result); // true
 /// // result == (4, 2, 16, 3)

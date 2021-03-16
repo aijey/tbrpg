@@ -37,7 +37,6 @@ void MainCharacterController::KeyReleasedEventListener::onNotified(const Scene::
 }
 
 void MainCharacterController::UpdateListener::onNotified(const Scene::UpdateEvent::Args &eventArgs) const {
-    std::cout << "deltaTime: " << eventArgs.deltaTime << std::endl;
     if (controller->pressedKey == sf::Keyboard::A){
         auto oldPos = controller->inputParams.doctorObject->transform.getPosition();
         controller->inputParams.doctorObject->transform.setPosition(oldPos + sf::Vector2f(-1, 0));

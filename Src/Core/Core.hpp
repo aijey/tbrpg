@@ -56,8 +56,6 @@ public:
             timePassed = std::chrono::duration_cast<std::chrono::microseconds>(lateUpdateTime - prevLateUpdateTime).count();
             prevLateUpdateTime = lateUpdateTime;
             scene.lateUpdateEvent.notifyAll(Scene::UpdateEvent::Args(((double)timePassed / 1000000.0)));
-            //std::cout << "Timepassed micro: " << timePassed << std::endl;
-            //std::cout << "FPS: " << 1000000.0 / timePassed << std::endl;
         }
     }
 private:
