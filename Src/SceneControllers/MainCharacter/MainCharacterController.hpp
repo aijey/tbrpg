@@ -25,24 +25,31 @@ public:
 
 
 private:
-    struct KeyEventListener: public Observer::Subscriber {
+    struct KeyPressedEventListener: public Scene::KeyEvent::Subscriber {
         MainCharacterController* controller = nullptr;
-        KeyEventListener() = default;
-        explicit KeyEventListener(MainCharacterController* controller): controller(controller){}
-        void onNotified(const Observer::BaseArgs& eventArgs) const override;
+        KeyPressedEventListener() = default;
+        explicit KeyPressedEventListener(MainCharacterController* controller): controller(controller){}
+        void onNotified(const Scene::KeyEvent::Args& eventArgs) const override;
     };
 
-    struct UpdateListener: public Observer::Subscriber {
+    struct KeyReleasedEventListener: public Scene::KeyEvent::Subscriber {
+        MainCharacterController* controller = nullptr;
+        KeyReleasedEventListener() = default;
+        explicit KeyReleasedEventListener(MainCharacterController* controller): controller(controller){}
+        void onNotified(const Scene::KeyEvent::Args& eventArgs) const override;
+    };
+
+    struct UpdateListener: public Scene::UpdateEvent::Subscriber {
         MainCharacterController* controller = nullptr;
         UpdateListener() = default;
         explicit UpdateListener(MainCharacterController* controller): controller(controller){}
-        void onNotified(const Observer::BaseArgs& eventArgs) const override;
+        void onNotified(const Scene::UpdateEvent::Args& eventArgs) const override;
     };
     std::shared_ptr<LerperController> lerperController;
     sf::Keyboard::Key pressedKey = sf::Keyboard::Unknown;
     UpdateListener updateListener;
-    KeyEventListener keyEventListener;
-
+    KeyPressedEventListener keyPressedEventListener;
+    KeyReleasedEventListener keyReleasedEventListener;
 };
 
 

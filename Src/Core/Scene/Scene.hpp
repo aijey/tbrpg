@@ -27,6 +27,10 @@ public:
             explicit Args(double d);
             double deltaTime;
         };
+        class Subscriber: public Observer::Subscriber {
+            void onNotified(const BaseArgs &eventArgs) const override;
+            virtual void onNotified(const Args& args) const = 0;
+        };
         void notifyAll(const Args& eventArgs) {
             Observer::notifyAll(eventArgs);
         }
@@ -36,6 +40,10 @@ public:
         struct Args: public Observer::BaseArgs{
             explicit Args(sf::Keyboard::Key code);
             sf::Keyboard::Key code;
+        };
+        class Subscriber: public Observer::Subscriber {
+            void onNotified(const BaseArgs &eventArgs) const override;
+            virtual void onNotified(const Args& args) const = 0;
         };
         void notifyAll(const Args& eventArgs) {
             Observer::notifyAll(eventArgs);

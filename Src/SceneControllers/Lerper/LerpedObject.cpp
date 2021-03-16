@@ -13,7 +13,7 @@ LerpedObject::LerpedObject(std::string &name, double fromValue, double toValue, 
 }
 
 bool LerpedObject::update(double time) {
-    double mult = time / (toTime - fromTime);
+    double mult = (time - fromTime) / (toTime - fromTime);
     if (mult >= 1.0){
         lerperFunctions->setValue(toValue);
         lerperFunctions->onFinish();

@@ -25,7 +25,6 @@ void LerperController::UpdateListener::onNotified(const Observer::BaseArgs &even
 
     auto updateArgsPtr = static_cast<Scene::UpdateEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
 
-    std::cout << updateArgsPtr->deltaTime << std::endl;
     std::vector<std::shared_ptr<LerpedObject>> toRemove;
     for (auto &i: lerperController->lerpedObjects) {
         auto time = lerperController->scene.getSceneTime();

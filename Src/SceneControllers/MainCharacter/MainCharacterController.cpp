@@ -26,20 +26,34 @@ MainCharacterController::InputParams::InputParams(std::shared_ptr<SceneObject> d
 
 }
 
-void MainCharacterController::KeyEventListener::onNotified(const Observer::BaseArgs &eventArgs) const {
-    auto keyEventArgs = static_cast<Scene::KeyEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
-    controller->pressedKey = keyEventArgs->code;
+void MainCharacterController::KeyPressedEventListener::onNotified(const Scene::KeyEvent::Args &eventArgs) const {
+    controller->pressedKey = eventArgs.code;
     std::cout << "new key: " << controller->pressedKey << std::endl;
 }
 
-void MainCharacterController::UpdateListener::onNotified(const Observer::BaseArgs &eventArgs) const {
-    //auto updateArgsPtr = static_cast<Scene::UpdateEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
-    std::cout << controller->inputParams.doctorObject->name << std::endl;
+
+void MainCharacterController::KeyReleasedEventListener::onNotified(const Scene::KeyEvent::Args &eventArgs) const {
+    controller->pressedKey = sf::Keyboard::Unknown;
 }
 
+void MainCharacterController::UpdateListener::onNotified(const Scene::UpdateEvent::Args &eventArgs) const {
+    std::cout << "deltaTime: " << eventArgs.deltaTime << std::endl;
+    if (controller->pressedKey == sf::Keyboard::A){
+        auto oldPos = controller->inputParams.doctorObject->transform.getPosition();
+        controller->inputParams.doctorObject->transform.setPosition(oldPos + sf::Vector2f(-1, 0));
+    }
+    if (controller->pressedKey == sf::Keyboard::D){
+        auto oldPos = controller->inputParams.doctorObject->transform.getPosition();
+        controller->inputParams.doctorObject->transform.setPosition(oldPos + sf::Vector2f(1, 0));
+    }
+}
+
+
 void MainCharacterController::run() {
-    keyEventListener = KeyEventListener(this);
+    keyPressedEventListener = KeyPressedEventListener(this);
+    keyReleasedEventListener = KeyReleasedEventListener(this);
     updateListener = UpdateListener(this);
     scene.updateEvent.subscribe(&updateListener);
-    scene.keyPressedEvent.subscribe(&keyEventListener);
+    scene.keyPressedEvent.subscribe(&keyPressedEventListener);
+    scene.keyReleasedEvent.subscribe(&keyReleasedEventListener);
 }

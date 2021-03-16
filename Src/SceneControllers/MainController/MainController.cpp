@@ -49,6 +49,7 @@ void MainController::run() {
         // LerperController
         lerperController = std::make_shared<LerperController>(scene, sceneResources);
         lerperController->run();
+
         // MainCharacterController
         mainCharacterController =
                 std::make_unique<MainCharacterController>(scene, sceneResources,

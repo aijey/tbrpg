@@ -17,6 +17,9 @@ public:
     void setPosition(sf::Vector2<float> newPosition){
         position = newPosition;
     }
+    sf::Vector2f getPosition() const{
+        return position;
+    }
     void setRotation(float rotation){
         this->rotation = rotation;
     }

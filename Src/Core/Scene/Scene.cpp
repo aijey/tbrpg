@@ -36,3 +36,13 @@ Scene::UpdateEvent::Args::Args(double d): deltaTime(d) {
 Scene::KeyEvent::Args::Args(sf::Keyboard::Key code): code(code) {
 
 }
+
+void Scene::UpdateEvent::Subscriber::onNotified(const Observer::BaseArgs &eventArgs) const {
+    const Args& updateEventArgs = *static_cast<Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
+    onNotified(updateEventArgs);
+}
+
+void Scene::KeyEvent::Subscriber::onNotified(const Observer::BaseArgs &eventArgs) const {
+    const Args& keyEventArgs = *static_cast<Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
+    onNotified(keyEventArgs);
+}
