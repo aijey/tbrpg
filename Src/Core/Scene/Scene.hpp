@@ -31,9 +31,14 @@ public:
             void onNotified(const BaseArgs &eventArgs) const override;
             virtual void onNotified(const Args& args) const = 0;
         };
-        void notifyAll(const Args& eventArgs) {
-            Observer::notifyAll(eventArgs);
-        }
+        template<class CaptureType, void(*Callback)(CaptureType , const Args&)>
+        class SubscriberAdv: public Observer::Subscriber{
+        public:
+            CaptureType captures;
+            SubscriberAdv() = default;
+            explicit SubscriberAdv(CaptureType captures);
+            void onNotified(const BaseArgs &eventArgs) const override;
+        };
     };
     class KeyEvent: public Observer {
     public:
@@ -45,28 +50,70 @@ public:
             void onNotified(const BaseArgs &eventArgs) const override;
             virtual void onNotified(const Args& args) const = 0;
         };
-        void notifyAll(const Args& eventArgs) {
-            Observer::notifyAll(eventArgs);
-        }
     };
+    class DelayedEvent: public Observer {
+    public:
+        struct Args: public Observer::BaseArgs{
+
+        };
+        class Subscriber: public Observer::Subscriber {
+        public:
+            explicit Subscriber(double notifyAt);
+            Subscriber() = default;
+            void onNotified(const BaseArgs &eventArgs) const override;
+            virtual void onNotified(const Args& args) const = 0;
+            double notifyAt;
+        };
+
+        explicit DelayedEvent(Scene* scene);
+    private:
+        class UpdateListener: public UpdateEvent::Subscriber {
+        public:
+            DelayedEvent* delayedEvent = nullptr;
+            explicit UpdateListener(DelayedEvent* delayedEvent);
+            UpdateListener() = default;
+            void onNotified(const Scene::UpdateEvent::Args &args) const override;
+        };
+
+        UpdateListener updateListener;
+        Scene* scene;
+    };
+
     Scene();
     std::shared_ptr<SceneObject> createSceneObject(const std::string& name);
+    void removeSceneObject(const std::shared_ptr<SceneObject>& sceneObject);
     std::vector<std::shared_ptr<SceneObject>> sceneObjects;
-    std::vector<std::shared_ptr<VisualComponent>> visualComponents;
-    std::vector<std::shared_ptr<CameraComponent>> cameraComponents;
-    std::shared_ptr<MainController> mainController;
-    void loadScene(SceneResources& resources);
+    double getSceneTime() const;
     UpdateEvent updateEvent;
     KeyEvent keyPressedEvent;
     UpdateEvent lateUpdateEvent;
     KeyEvent keyReleasedEvent;
-
-    void setSceneTime(double time);
-    double getSceneTime() const;
-
+    DelayedEvent delayedEvent;
 private:
+    void loadScene(SceneResources& resources);
+    std::shared_ptr<MainController> mainController;
+    std::vector<std::shared_ptr<VisualComponent>> visualComponents;
+    std::vector<std::shared_ptr<CameraComponent>> cameraComponents;
+    template<class T>
+    void removeComponents(std::vector<std::shared_ptr<T>>& from, std::vector<std::shared_ptr<T>>& components);
+    template<class T>
+    void removeComponent(std::vector<std::shared_ptr<T>>& from, std::shared_ptr<T>& component);
+    void removeAllSceneObjectComponents(const std::shared_ptr<SceneObject> &sceneObject);
+    void setSceneTime(double time);
     double sceneTime = 0.0;
 };
+
+template<class CaptureType, void (*Callback)(CaptureType , const Scene::UpdateEvent::Args&)>
+void Scene::UpdateEvent::SubscriberAdv<CaptureType, Callback>::onNotified(const Observer::BaseArgs& eventArgs) const {
+    const Scene::UpdateEvent::Args& updateEventArgs =
+            *static_cast<Scene::UpdateEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
+    Callback(captures, updateEventArgs);
+}
+
+template<class CaptureType, void (*Callback)(CaptureType , const Scene::UpdateEvent::Args &)>
+Scene::UpdateEvent::SubscriberAdv<CaptureType, Callback>::SubscriberAdv(CaptureType captures): captures(captures) {
+
+}
 
 
 #endif //TBRPG_SCENE_HPP

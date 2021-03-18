@@ -6,8 +6,8 @@
 #include <utility>
 #include "CameraComponent.hpp"
 #include "../../SceneObject/SceneObject.hpp"
-CameraComponent::CameraComponent(std::shared_ptr<sf::RenderWindow> renderWindow, SceneObject* sceneObject)
-    : BaseComponent(sceneObject), renderWindow(std::move(renderWindow))
+CameraComponent::CameraComponent(const std::shared_ptr<sf::RenderWindow>& renderWindow, SceneObject* sceneObject)
+    : BaseComponent(sceneObject), renderWindow(renderWindow)
 {
 }
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Renderer.hpp"
 #include "../Scene/Component/VisualComponent/VisualComponent.hpp"
+#include "../Scene/Component/CameraComponent/CameraComponent.hpp"
 #include "../Scene/Scene.hpp"
 Renderer::Renderer(Scene &scene): scene(scene) {
 }

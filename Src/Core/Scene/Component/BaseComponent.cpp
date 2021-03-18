@@ -16,3 +16,6 @@ BaseComponent::BaseComponent(SceneObject *sceneObject): sceneObject(sceneObject)
 SceneObject* BaseComponent::getSceneObject() {
     return sceneObject;
 }
+
+BaseComponent::~BaseComponent() {
+}

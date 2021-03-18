@@ -11,10 +11,12 @@
 
 class VisualComponent: public BaseComponent {
 public:
-    VisualComponent(std::shared_ptr<sf::Drawable> drawable, SceneObject* sceneObject);
-    VisualComponent(std::shared_ptr<sf::Drawable> drawable, const sf::Vector2f& pivot, SceneObject* sceneObject);
-    void prepareForRender(const Transform& cameraTransform, const sf::Vector2u& cameraSize);
+    VisualComponent(const std::shared_ptr<sf::Drawable>& drawable, SceneObject* sceneObject);
+    VisualComponent(const std::shared_ptr<sf::Drawable>& drawable, const sf::Vector2f& pivot, SceneObject* sceneObject);
     VisualComponent(const VisualComponent& other) = delete;
+    ~VisualComponent() = default;
+
+    void prepareForRender(const Transform& cameraTransform, const sf::Vector2u& cameraSize);
     std::shared_ptr<VisualComponent> copy();
 
 

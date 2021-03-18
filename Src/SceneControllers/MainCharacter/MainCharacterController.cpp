@@ -3,7 +3,7 @@
 //
 
 #include "MainCharacterController.hpp"
-
+#include <iostream>
 
 
 MainCharacterController::MainCharacterController(Scene &scene, SceneResources &resources,

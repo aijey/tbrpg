@@ -15,6 +15,7 @@ class SceneObject;
 class BaseComponent {
 public:
     explicit BaseComponent(SceneObject* sceneObject);
+    ~BaseComponent();
     SceneObject* getSceneObject();
 private:
     SceneObject* sceneObject;

@@ -14,15 +14,10 @@ public:
     Transform() = default;
     Transform(sf::Vector2<float> position, float rotation): position(position), rotation(rotation){};
 
-    void setPosition(sf::Vector2<float> newPosition){
-        position = newPosition;
-    }
-    sf::Vector2f getPosition() const{
-        return position;
-    }
-    void setRotation(float rotation){
-        this->rotation = rotation;
-    }
+    void setPosition(const sf::Vector2<float>& newPosition);
+    void setPosition(int x, int y);
+    sf::Vector2f getPosition() const;
+    void setRotation(float rotation);
 };
 
 

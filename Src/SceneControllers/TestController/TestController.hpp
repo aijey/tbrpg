@@ -36,10 +36,28 @@ public:
         KeyReleasedListener() = default;
         void onNotified(const Scene::KeyEvent::Args& args) const override;
     };
+    class DelayedEventListener: public Scene::DelayedEvent::Subscriber {
+    public:
+        TestController* testController = nullptr;
+        explicit DelayedEventListener(TestController* testController, double notifyAt)
+            :Scene::DelayedEvent::Subscriber(notifyAt), testController(testController) {};
+        DelayedEventListener() = default;
+        void onNotified(const Scene::DelayedEvent::Args& args) const override;
+    };
+    struct UpdateCaptures {
+        TestController* testController = nullptr;
+        UpdateCaptures() = default;
+        static void onUpdate(UpdateCaptures captures, const Scene::UpdateEvent::Args& args);
+    };
+
     InputParams params;
     UpdateListener updateListener;
+    Scene::UpdateEvent::SubscriberAdv<UpdateCaptures, UpdateCaptures::onUpdate> updateListener2;
     KeyPressedListener keyPressedListener;
     KeyReleasedListener keyReleasedListener;
+    DelayedEventListener delayedEventListener;
+    void (*onUpdate)(const Observer::BaseArgs& args) = nullptr;
+    int someInt = 123;
     std::vector<std::shared_ptr<SceneObject>> sceneObjects;
     bool isSPressed = false;
     TestController(Scene& sc, SceneResources& sceneResources, InputParams params) : SceneController(sc, sceneResources), params(std::move(params)) {

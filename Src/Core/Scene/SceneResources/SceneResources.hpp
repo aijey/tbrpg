@@ -12,6 +12,11 @@ class SceneResources {
 public:
     explicit SceneResources(std::shared_ptr<sf::RenderWindow> renderWindow);
     std::shared_ptr<sf::RenderWindow> renderWindow;
+    sf::Texture* loadTexture(const std::string& filename);
+    void unloadTexture(const std::string &filename);
+private:
+    std::map<std::string, std::shared_ptr<sf::Texture>> textures;
+
 };
 
 

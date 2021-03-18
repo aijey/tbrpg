@@ -25,10 +25,15 @@ public:
     Observer() = default;
     void notifyAll(const BaseArgs& eventArgs);
     void subscribe(Subscriber* sub);
+    void subscribe(void (*callback)(const Observer::BaseArgs& eventArgs));
     void unsubscribe(Subscriber* sub);
+    void unsubscribe(void (*callback)(const Observer::BaseArgs& eventArgs));
+
+protected:
+    std::set<Subscriber*> subscribers;
 
 private:
-    std::set<Subscriber*> subscribers;
+    std::set<void(*)(const BaseArgs&)> callbacks;
 
 };
 

@@ -4,6 +4,7 @@
 
 #include "TestController.hpp"
 #include <cmath>
+#include <iostream>
 
 void TestController::UpdateListener::onNotified(const Scene::UpdateEvent::Args &args) const {
     auto currentPosition = testController->params.circle->transform.getPosition();
@@ -21,13 +22,24 @@ void TestController::UpdateListener::onNotified(const Scene::UpdateEvent::Args &
     }
 }
 
+void TestController::UpdateCaptures::onUpdate(TestController::UpdateCaptures captures,
+                                              const Scene::UpdateEvent::Args &args) {
+    std::cout << "UpdateEvent: " << captures.testController->someInt << std::endl;
+}
+
 void TestController::run() {
     updateListener = UpdateListener(this);
     keyPressedListener = KeyPressedListener(this);
     keyReleasedListener = KeyReleasedListener(this);
+    delayedEventListener = DelayedEventListener(this, 5);
     scene.updateEvent.subscribe(&updateListener);
     scene.keyPressedEvent.subscribe(&keyPressedListener);
     scene.keyReleasedEvent.subscribe(&keyReleasedListener);
+    scene.delayedEvent.subscribe(&delayedEventListener);
+    //scene.updateEvent.subscribe([](const Observer::BaseArgs& args){std::cout << "UpdateEvent" << std::endl;});
+
+    updateListener2 = Scene::UpdateEvent::SubscriberAdv<UpdateCaptures, UpdateCaptures::onUpdate>({this});
+    scene.updateEvent.subscribe(&updateListener2);
 }
 
 void TestController::KeyPressedListener::onNotified(const Scene::KeyEvent::Args &args) const {
@@ -49,4 +61,8 @@ void TestController::KeyReleasedListener::onNotified(const Scene::KeyEvent::Args
     if (args.code == sf::Keyboard::S){
         testController->isSPressed = false;
     }
+}
+
+void TestController::DelayedEventListener::onNotified(const Scene::DelayedEvent::Args &args) const {
+    std::cout << "DelayedEvent happened!" << std::endl;
 }

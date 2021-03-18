@@ -4,15 +4,16 @@
 
 #include "VisualComponent.hpp"
 #include "../../SceneObject/SceneObject.hpp"
+#include "../../Scene.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <utility>
-VisualComponent::VisualComponent(std::shared_ptr<sf::Drawable> drawable, SceneObject* sceneObject)
-    : BaseComponent(sceneObject), drawable(std::move(drawable))  {
+VisualComponent::VisualComponent(const std::shared_ptr<sf::Drawable>& drawable, SceneObject* sceneObject)
+    : BaseComponent(sceneObject), drawable(drawable)  {
 }
 
-VisualComponent::VisualComponent(std::shared_ptr<sf::Drawable> drawable, const sf::Vector2f& pivot, SceneObject* sceneObject)
-    : BaseComponent(sceneObject), drawable(std::move(drawable)), pivot(pivot){
+VisualComponent::VisualComponent(const std::shared_ptr<sf::Drawable>& drawable, const sf::Vector2f& pivot, SceneObject* sceneObject)
+    : BaseComponent(sceneObject), drawable(drawable), pivot(pivot){
 
 }
 
