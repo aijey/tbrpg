@@ -47,12 +47,12 @@ public:
     struct UpdateCaptures {
         TestController* testController = nullptr;
         UpdateCaptures() = default;
-        static void onUpdate(UpdateCaptures captures, const Scene::UpdateEvent::Args& args);
+        static void onUpdate(UpdateCaptures& captures, const Scene::UpdateEvent::Args& args);
     };
 
     InputParams params;
     UpdateListener updateListener;
-    Scene::UpdateEvent::SubscriberAdv<UpdateCaptures, UpdateCaptures::onUpdate> updateListener2;
+    Scene::UpdateEvent::SubscriberOnCb<UpdateCaptures, UpdateCaptures::onUpdate> updateListener2;
     KeyPressedListener keyPressedListener;
     KeyReleasedListener keyReleasedListener;
     DelayedEventListener delayedEventListener;

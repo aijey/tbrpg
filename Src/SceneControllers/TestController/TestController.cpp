@@ -12,6 +12,8 @@ void TestController::UpdateListener::onNotified(const Scene::UpdateEvent::Args &
         currentPosition.x = std::cos(testController->scene.getSceneTime()) * 200;
         currentPosition.y = std::sin(testController->scene.getSceneTime()) * 200;
         testController->params.circle->transform.setPosition(currentPosition);
+        auto prevRotation = testController->params.circle->transform.getRotation();
+        testController->params.circle->transform.setRotation(prevRotation + 0.05f);
     }
     int h = 0;
     for (auto& i: testController->sceneObjects) {
@@ -22,7 +24,7 @@ void TestController::UpdateListener::onNotified(const Scene::UpdateEvent::Args &
     }
 }
 
-void TestController::UpdateCaptures::onUpdate(TestController::UpdateCaptures captures,
+void TestController::UpdateCaptures::onUpdate(TestController::UpdateCaptures& captures,
                                               const Scene::UpdateEvent::Args &args) {
     std::cout << "UpdateEvent: " << captures.testController->someInt << std::endl;
 }
@@ -38,12 +40,13 @@ void TestController::run() {
     scene.delayedEvent.subscribe(&delayedEventListener);
     //scene.updateEvent.subscribe([](const Observer::BaseArgs& args){std::cout << "UpdateEvent" << std::endl;});
 
-    updateListener2 = Scene::UpdateEvent::SubscriberAdv<UpdateCaptures, UpdateCaptures::onUpdate>({this});
+    updateListener2 = Scene::UpdateEvent::SubscriberOnCb<UpdateCaptures, UpdateCaptures::onUpdate>({this});
     scene.updateEvent.subscribe(&updateListener2);
 }
 
 void TestController::KeyPressedListener::onNotified(const Scene::KeyEvent::Args &args) const {
     if (args.code == sf::Keyboard::Space) {
+        testController->someInt = rand() % 123;
         auto currentPosition = testController->params.circle->transform.getPosition();
         auto newCircle = std:: make_shared<sf::CircleShape>(10);
         newCircle->setFillColor(sf::Color::Red);

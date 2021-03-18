@@ -5,6 +5,7 @@
 #include "VisualComponent.hpp"
 #include "../../SceneObject/SceneObject.hpp"
 #include "../../Scene.hpp"
+#include "../../../../Utils/MathStuff/MathStuff.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <utility>
@@ -22,12 +23,16 @@ void VisualComponent::prepareForRender(const Transform& cameraTransform, const s
     if (transformable){
         int addX = (int)cameraSize.x / 2;
         int addY = (int)cameraSize.y / 2;
-        auto position = getSceneObject()->transform.position - cameraTransform.position;
+        auto position = getSceneObject()->transform.getPosition() - cameraTransform.getPosition();
         position.x += (float)addX;
         position.y += (float)addY;
-        auto rotation = getSceneObject()->transform.rotation - cameraTransform.rotation;
-        transformable->setPosition(position - pivot);
+        auto rotation = getSceneObject()->transform.getRotation() - cameraTransform.getRotation();
+        auto scale = getSceneObject()->transform.getScale();
+        sf::Vector2f scalePivot = {pivot.x * scale.x, pivot.y * scale.y};
+        auto rotatedAndScaledPivot = MathStuff::rotate2DVectorDegrees(scalePivot, rotation);
+        transformable->setPosition(position - rotatedAndScaledPivot);
         transformable->setRotation(rotation);
+        transformable->setScale(scale);
     }
 
 }

@@ -31,12 +31,12 @@ public:
             void onNotified(const BaseArgs &eventArgs) const override;
             virtual void onNotified(const Args& args) const = 0;
         };
-        template<class CaptureType, void(*Callback)(CaptureType , const Args&)>
-        class SubscriberAdv: public Observer::Subscriber{
+        template<class CaptureType, void(*Callback)(CaptureType& , const Args&)>
+        class SubscriberOnCb: public Observer::Subscriber{
         public:
-            CaptureType captures;
-            SubscriberAdv() = default;
-            explicit SubscriberAdv(CaptureType captures);
+            mutable CaptureType captures;
+            SubscriberOnCb() = default;
+            explicit SubscriberOnCb(CaptureType captures);
             void onNotified(const BaseArgs &eventArgs) const override;
         };
     };
@@ -103,15 +103,15 @@ private:
     double sceneTime = 0.0;
 };
 
-template<class CaptureType, void (*Callback)(CaptureType , const Scene::UpdateEvent::Args&)>
-void Scene::UpdateEvent::SubscriberAdv<CaptureType, Callback>::onNotified(const Observer::BaseArgs& eventArgs) const {
+template<class CaptureType, void (*Callback)(CaptureType& , const Scene::UpdateEvent::Args&)>
+void Scene::UpdateEvent::SubscriberOnCb<CaptureType, Callback>::onNotified(const Observer::BaseArgs& eventArgs) const {
     const Scene::UpdateEvent::Args& updateEventArgs =
             *static_cast<Scene::UpdateEvent::Args*>(const_cast<Observer::BaseArgs*>(&eventArgs));
     Callback(captures, updateEventArgs);
 }
 
-template<class CaptureType, void (*Callback)(CaptureType , const Scene::UpdateEvent::Args &)>
-Scene::UpdateEvent::SubscriberAdv<CaptureType, Callback>::SubscriberAdv(CaptureType captures): captures(captures) {
+template<class CaptureType, void (*Callback)(CaptureType& , const Scene::UpdateEvent::Args &)>
+Scene::UpdateEvent::SubscriberOnCb<CaptureType, Callback>::SubscriberOnCb(CaptureType captures): captures(std::move(captures)) {
 
 }
 
