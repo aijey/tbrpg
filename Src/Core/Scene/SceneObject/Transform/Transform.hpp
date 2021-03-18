@@ -9,8 +9,8 @@
 
 class Transform {
 public:
-    sf::Vector2<float> position;
-    float rotation;
+    sf::Vector2<float> position = {0, 0};
+    float rotation = 0.0;
     Transform() = default;
     Transform(sf::Vector2<float> position, float rotation): position(position), rotation(rotation){};
 

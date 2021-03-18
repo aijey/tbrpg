@@ -23,17 +23,18 @@ void MainController::run() {
         circleSc->createVisualComponent(circle);
 
         // krutitisya
-        auto scene0 = scene.createSceneObject("MySceneObject");
-        auto newCircle = std:: make_shared<sf::CircleShape>(20);
-        newCircle->setFillColor(sf::Color::Black);
-        scene0->createVisualComponent(newCircle, { 20, 20 });
+        auto krutitisya = scene.createSceneObject("MySceneObject");
+        auto texture = sceneResources.loadTexture("C:/Users/Arturan/Downloads/boss_bee.png");
+        auto sprite = std::make_shared<sf::Sprite>();
+        sprite->setTexture(*texture);
+        krutitisya->createVisualComponent(sprite);
 
         auto sceneObject2 = scene.createSceneObject("SquareObject1");
         sceneObject2->transform.setPosition(sf::Vector2f(50, 50));
         sceneObject2->transform.setRotation(45);
         auto square = std::make_shared<sf::RectangleShape>(sf::Vector2f(20, 20));
         square->setFillColor(sf::Color::Yellow);
-        sceneObject2->createVisualComponent(square);
+        sceneObject2->createVisualComponent(sprite);
 
         // DOCTOR OBJECT
         auto doctorObject = scene.createSceneObject("Doc");
@@ -70,7 +71,7 @@ void MainController::run() {
         mainCharacterController->run();
 
         //TestController
-        testController = std::make_shared<TestController>(scene, sceneResources, TestController::InputParams(scene0));
+        testController = std::make_shared<TestController>(scene, sceneResources, TestController::InputParams(krutitisya));
         testController->run();
 }
 
