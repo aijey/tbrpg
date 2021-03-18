@@ -37,18 +37,21 @@ void MainController::run() {
 
         // DOCTOR OBJECT
         auto doctorObject = scene.createSceneObject("Doc");
+        doctorObject->transform.setPosition(0, -10);
         auto doctorCircle = std::make_shared<sf::CircleShape>(20);
         doctorCircle->setFillColor(sf::Color::Green);
         doctorObject->createVisualComponent(doctorCircle, {20, 20});
 
         // ENGINEER OBJECT
         auto engineerObject = scene.createSceneObject("EngineerObject");
+        engineerObject->transform.setPosition(-10, 10);
         auto engineerCircle = std::make_shared<sf::CircleShape>(20);
         engineerCircle->setFillColor(sf::Color::Blue);
         engineerObject->createVisualComponent(engineerCircle, {20, 20});
 
         // SNIPER OBJECT
         auto sniperObject = scene.createSceneObject("SniperObject");
+        sniperObject->transform.setPosition(10, 10);
         auto sniperCircle = std::make_shared<sf::CircleShape>(20);
         sniperCircle->setFillColor(sf::Color(163, 73, 164)); // Purple
         sniperObject->createVisualComponent(sniperCircle, {20, 20});
